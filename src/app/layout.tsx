@@ -1,5 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { CartProvider } from "./CartContext";
+import CartDrawer from "./CartDrawer";
+import { ThemeProvider } from "./ThemeContext";
 
 export const metadata: Metadata = {
   title: "Boba King | Bubble Tea in Winneba",
@@ -13,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('boba-king-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}`,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -22,8 +30,13 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#0A1931] antialiased min-h-screen">
-        {children}
+      <body className="antialiased min-h-screen" style={{ backgroundColor: "var(--bg)", color: "var(--text)" }}>
+        <ThemeProvider>
+          <CartProvider>
+            {children}
+            <CartDrawer />
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
