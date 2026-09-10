@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import LegalPage from "../legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions",
+  description:
+    "The terms and conditions for ordering from Boba King in Winneba.",
+};
 
 export default function TermsAndConditions() {
   return (

@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import LegalPage from "../legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "How Boba King collects, uses, and protects your personal information.",
+};
 
 export default function PrivacyPolicy() {
   return (

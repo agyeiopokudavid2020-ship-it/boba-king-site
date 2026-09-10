@@ -5,9 +5,44 @@ import CartDrawer from "./CartDrawer";
 import { ThemeProvider } from "./ThemeContext";
 
 export const metadata: Metadata = {
-  title: "Boba King | Bubble Tea in Winneba",
+  metadataBase: new URL("https://boba-king.com"),
+  title: {
+    default: "Boba King | Bubble Tea Fit for Royalty in Winneba",
+    template: "%s | Boba King",
+  },
   description:
-    "Premium bubble tea crafted for everyone. Bold flavors, fresh boba, good vibes right here in Winneba.",
+    "Handcrafted boba, rich brewed teas, and vibrant flavors made fresh daily for the University of Education, Winneba community. Order instantly on WhatsApp.",
+  keywords: [
+    "bubble tea Winneba",
+    "boba Ghana",
+    "milk tea UEW",
+    "Boba King",
+    "tapioca pearls",
+    "bubble tea delivery Winneba",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "Boba King",
+    title: "Boba King | Bubble Tea Fit for Royalty",
+    description:
+      "Handcrafted boba made fresh daily in Winneba. Classic, taro, matcha & more — order instantly on WhatsApp.",
+    locale: "en_GH",
+    images: [
+      {
+        url: "/hero-drinks.jpg",
+        width: 1200,
+        height: 960,
+        alt: "Boba King signature drinks on a tray",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Boba King | Bubble Tea Fit for Royalty",
+    description:
+      "Handcrafted boba made fresh daily in Winneba. Order instantly on WhatsApp.",
+    images: ["/hero-drinks.jpg"],
+  },
 };
 
 export default function RootLayout({

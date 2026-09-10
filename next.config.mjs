@@ -1,22 +1,12 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   images: {
+    // Only remaining remote image is the WhatsApp QR code. Menu photos,
+    // hero, avatars, and favicon are all self-hosted in /public.
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "api.dicebear.com",
-      },
-      {
-        protocol: "https",
         hostname: "api.qrserver.com",
-      },
-      {
-        protocol: "https",
-        hostname: "i.pravatar.cc",
       },
     ],
   },

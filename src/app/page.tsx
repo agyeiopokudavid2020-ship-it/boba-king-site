@@ -5,90 +5,7 @@ import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { useCart } from "./CartContext";
 import { useTheme } from "./ThemeContext";
-
-// Types
-interface MenuItem {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  priceLabel: string;
-  description: string;
-  badge?: string;
-  image: string;
-  wide?: boolean;
-}
-
-// Data
-const MENU_ITEMS: MenuItem[] = [
-  {
-    id: "classic-milk-tea",
-    name: "Classic Milk Tea",
-    category: "Signature Milk Tea",
-    price: 35,
-    priceLabel: "GHS 35",
-    description:
-      "Traditional black tea brewed to perfection with rich cream and chewy brown sugar tapioca pearls.",
-    badge: "🔥 Bestseller",
-    image: "/menu/classic-milk-tea.jpg",
-    wide: true,
-  },
-  {
-    id: "taro-king-special",
-    name: "Taro King Special",
-    category: "Signature Milk Tea",
-    price: 40,
-    priceLabel: "GHS 40",
-    description:
-      "Rich, velvety sweet taro tea blended with signature boba for an authentic royal treat.",
-    badge: "👑 Royal Pick",
-    image: "/menu/taro-king-special.jpg",
-  },
-  {
-    id: "strawberry-crush",
-    name: "Strawberry Crush",
-    category: "Fruit Tea & Refreshers",
-    price: 40,
-    priceLabel: "GHS 40",
-    description:
-      "Fresh strawberry puree infused into premium green tea with bursting popping boba.",
-    badge: "🍓 Fruity",
-    image: "/menu/strawberry-crush.jpg",
-  },
-  {
-    id: "matcha-royal",
-    name: "Matcha Royal",
-    category: "Specialty Tea",
-    price: 45,
-    priceLabel: "GHS 45",
-    description:
-      "Authentic ceremonial grade Japanese matcha layered smooth over velvety cold milk.",
-    badge: "🍵 Premium",
-    image: "/menu/matcha-royal.jpg",
-    wide: true,
-  },
-  {
-    id: "mango-fruit-tea",
-    name: "Mango Fruit Tea",
-    category: "Fruit Tea & Refreshers",
-    price: 35,
-    priceLabel: "GHS 35",
-    description:
-      "Sun-ripened tropical mango paired with aromatic jasmine green tea over crushed ice.",
-    badge: "🥭 Refreshing",
-    image: "/menu/mango-fruit-tea.jpg",
-  },
-  {
-    id: "brown-sugar-boba-latte",
-    name: "Brown Sugar Boba Latte",
-    category: "Specialty Tea",
-    price: 42,
-    priceLabel: "GHS 42",
-    description: "Smooth latte swirled with rich brown sugar syrup and chewy boba pearls.",
-    badge: "⭐ Fan Favorite",
-    image: "/menu/brown-sugar-boba-latte.jpg",
-  },
-];
+import { MENU_ITEMS } from "./menuData";
 
 export default function Home() {
   const { addItem, totalItems, openCart } = useCart();
@@ -573,11 +490,11 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-4 sm:gap-6">
             {[
-              { name: "Ama Mensah", stars: 5, text: "The Taro King Special is my go-to after lectures at Central Campus. The boba is always fresh and chewy, and I've tried pretty much everywhere in Winneba. Nothing else comes close.", avatar: "https://i.pravatar.cc/150?img=47" },
-              { name: "Kofi Asante", stars: 5, text: "Best boba spot on Yeenua Street, hands down. The student discount makes it even better. My go-to is the Matcha Royal — smooth and not too sweet.", avatar: "https://i.pravatar.cc/150?img=53" },
-              { name: "Efua Amoako", stars: 5, text: "Brought my friends from Accra here after visiting the Winneba beach. They wouldn't stop talking about the Strawberry Crush. Premium quality for the price.", avatar: "https://i.pravatar.cc/150?img=45" },
-              { name: "Nana Yaw Boateng", stars: 5, text: "I love that the boba is made fresh daily. You can really taste the difference. The Mango Fruit Tea is my summer essential after morning classes on Central Campus.", avatar: "https://i.pravatar.cc/150?img=68" },
-              { name: "Abena Osei", stars: 5, text: "After late-night study sessions at the university library, nothing hits like a Classic Milk Tea from Boba King. Fast pickup, friendly staff, right on Yeenua Street.", avatar: "https://i.pravatar.cc/150?img=44" },
+              { name: "Ama Mensah", stars: 5, text: "The Taro King Special is my go-to after lectures at Central Campus. The boba is always fresh and chewy, and I've tried pretty much everywhere in Winneba. Nothing else comes close.", avatar: "/avatars/ama-mensah.svg" },
+              { name: "Kofi Asante", stars: 5, text: "Best boba spot on Yeenua Street, hands down. The student discount makes it even better. My go-to is the Matcha Royal — smooth and not too sweet.", avatar: "/avatars/kofi-asante.svg" },
+              { name: "Efua Amoako", stars: 5, text: "Brought my friends from Accra here after visiting the Winneba beach. They wouldn't stop talking about the Strawberry Crush. Premium quality for the price.", avatar: "/avatars/efua-amoako.svg" },
+              { name: "Nana Yaw Boateng", stars: 5, text: "I love that the boba is made fresh daily. You can really taste the difference. The Mango Fruit Tea is my summer essential after morning classes on Central Campus.", avatar: "/avatars/nana-yaw-boateng.svg" },
+              { name: "Abena Osei", stars: 5, text: "After late-night study sessions at the university library, nothing hits like a Classic Milk Tea from Boba King. Fast pickup, friendly staff, right on Yeenua Street.", avatar: "/avatars/abena-osei.svg" },
             ].map((review, i) => (
               <div
                 key={i}

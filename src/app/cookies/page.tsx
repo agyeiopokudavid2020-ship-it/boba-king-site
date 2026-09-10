@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import LegalPage from "../legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Cookie Policy",
+  description:
+    "How Boba King uses cookies and similar technologies on this website.",
+};
 
 export default function CookiePolicy() {
   return (
