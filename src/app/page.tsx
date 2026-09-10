@@ -1,17 +1,44 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { useCart } from "./CartContext";
 import { useTheme } from "./ThemeContext";
-import { MENU_ITEMS } from "./menuData";
+import { MENU_ITEMS, CATEGORIES } from "./menuData";
+
+const ALL_CATEGORY = "All";
 
 export default function Home() {
   const { addItem, totalItems, openCart } = useCart();
   const { theme, toggleTheme } = useTheme();
   const [videoIndex, setVideoIndex] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
+
+  const visibleItems =
+    activeCategory === ALL_CATEGORY
+      ? MENU_ITEMS
+      : MENU_ITEMS.filter((item) => item.category === activeCategory);
+
+  // Cards start hidden (reveal animation). When the filter changes we re-render
+  // a different set of nodes, so re-trigger the reveal so they don't stay
+  // invisible; previously-seen ones just snap back with no extra delay.
+  // Skipped on first mount so ScrollReveal keeps handling the scroll-in.
+  const isFirstFilterRender = useRef(true);
+  useEffect(() => {
+    if (isFirstFilterRender.current) {
+      isFirstFilterRender.current = false;
+      return;
+    }
+    document
+      .querySelectorAll("#menu [data-stagger]")
+      .forEach((el) => {
+        el.classList.remove("revealed");
+        if (el instanceof HTMLElement) el.style.transitionDelay = "";
+        requestAnimationFrame(() => el.classList.add("revealed"));
+      });
+  }, [activeCategory]);
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 500);
@@ -385,11 +412,48 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Category filter tabs */}
+        <div
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-10"
+          role="tablist"
+          aria-label="Filter menu by category"
+        >
+          {[ALL_CATEGORY, ...CATEGORIES].map((cat) => {
+            const active = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setActiveCategory(cat)}
+                className="px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-colors"
+                style={
+                  active
+                    ? {
+                        backgroundImage:
+                          "linear-gradient(50deg, var(--gold-light), var(--gold))",
+                        color: "#0A1931",
+                      }
+                    : {
+                        backgroundColor: "var(--bg-card)",
+                        color: "var(--text-secondary)",
+                        border: "1px solid var(--border-gold)",
+                      }
+                }
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {MENU_ITEMS.map((item) => (
+          {visibleItems.map((item) => (
             <div
               key={item.id}
-              className={`rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-xl data-stagger ${
+              data-stagger
+              className={`rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-xl ${
                 item.wide ? "md:col-span-2 lg:col-span-2" : ""
               }`}
               style={{ backgroundColor: "var(--bg-card)" }}
@@ -544,7 +608,7 @@ export default function Home() {
           </p>
           <div className="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto mb-8 rounded-xl overflow-hidden">
             <Image
-              src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://wa.me/233248978606?text=Hello%20Boba%20King!%20I%20want%20to%20order"
+              src="/whatsapp-qr.png"
               alt="Scan to order on WhatsApp"
               fill
               className="object-cover"
@@ -633,7 +697,7 @@ export default function Home() {
           </p>
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden mb-6" style={{ border: "2px solid var(--border-gold)" }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.0!2d-0.983!3d5.345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMjAnNDIuMCJOIDDCsDU4JzU4LjgiVw!5e0!3m2!1sen!2sgh!4v1700000000000!5m2!1sen!2sgh"
+              src="https://maps.google.com/maps?q=995C%2BV3%20Winneba,%20Ghana&z=17&output=embed"
               width="100%"
               height="350"
               style={{ border: 0 }}

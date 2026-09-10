@@ -84,3 +84,10 @@ export const MENU_ITEMS: MenuItem[] = [
     image: "/menu/brown-sugar-boba-latte.jpg",
   },
 ];
+
+// Order of the filter tabs. "All" is prepended in page.tsx.
+export const CATEGORIES: string[] = [
+  "Signature Milk Tea",
+  "Fruit Tea & Refreshers",
+  "Specialty Tea",
+];
