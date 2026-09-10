@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { useCart } from "./CartContext";
@@ -30,8 +30,7 @@ const MENU_ITEMS: MenuItem[] = [
     description:
       "Traditional black tea brewed to perfection with rich cream and chewy brown sugar tapioca pearls.",
     badge: "🔥 Bestseller",
-    image:
-      "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80",
+    image: "/menu/classic-milk-tea.jpg",
     wide: true,
   },
   {
@@ -43,8 +42,7 @@ const MENU_ITEMS: MenuItem[] = [
     description:
       "Rich, velvety sweet taro tea blended with signature boba for an authentic royal treat.",
     badge: "👑 Royal Pick",
-    image:
-      "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=600&q=80",
+    image: "/menu/taro-king-special.jpg",
   },
   {
     id: "strawberry-crush",
@@ -55,8 +53,7 @@ const MENU_ITEMS: MenuItem[] = [
     description:
       "Fresh strawberry puree infused into premium green tea with bursting popping boba.",
     badge: "🍓 Fruity",
-    image:
-      "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80",
+    image: "/menu/strawberry-crush.jpg",
   },
   {
     id: "matcha-royal",
@@ -67,8 +64,7 @@ const MENU_ITEMS: MenuItem[] = [
     description:
       "Authentic ceremonial grade Japanese matcha layered smooth over velvety cold milk.",
     badge: "🍵 Premium",
-    image:
-      "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80",
+    image: "/menu/matcha-royal.jpg",
     wide: true,
   },
   {
@@ -80,27 +76,31 @@ const MENU_ITEMS: MenuItem[] = [
     description:
       "Sun-ripened tropical mango paired with aromatic jasmine green tea over crushed ice.",
     badge: "🥭 Refreshing",
-    image:
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80",
+    image: "/menu/mango-fruit-tea.jpg",
   },
   {
-    id: "vanilla-boba-latte",
-    name: "Vanilla Boba Latte",
+    id: "brown-sugar-boba-latte",
+    name: "Brown Sugar Boba Latte",
     category: "Specialty Tea",
     price: 42,
     priceLabel: "GHS 42",
-    description: "Smooth vanilla latte with chewy brown sugar boba pearls.",
+    description: "Smooth latte swirled with rich brown sugar syrup and chewy boba pearls.",
     badge: "⭐ Fan Favorite",
-    image:
-      "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80",
+    image: "/menu/brown-sugar-boba-latte.jpg",
   },
 ];
 
 export default function Home() {
   const { addItem, totalItems, openCart } = useCart();
   const { theme, toggleTheme } = useTheme();
-  const [menuOpen, setMenuOpen] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const videos = ["/video1.mp4", "/video2.mp4"];
 
   return (
@@ -141,7 +141,7 @@ export default function Home() {
             </span>
           </a>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide" style={{ color: "var(--nav-text)" }}>
+          <div className="flex items-center gap-6 sm:gap-8 text-sm font-semibold tracking-wide" style={{ color: "var(--nav-text)" }}>
             <a href="#menu">Menu</a>
             <a href="#why-us">About Us</a>
             <a href="#location">Location</a>
@@ -173,96 +173,11 @@ export default function Home() {
                 </span>
               )}
             </button>
-            <button
-              onClick={() => setMenuOpen((o) => !o)}
-              className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded-lg"
-              aria-label="Toggle menu"
-            >
-              <span className={`block w-6 h-0.5 rounded-full transition-all duration-300 ${menuOpen ? "translate-y-2 rotate-45" : ""}`} style={{ backgroundColor: "var(--nav-text)" }} />
-              <span className={`block w-6 h-0.5 rounded-full transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} style={{ backgroundColor: "var(--nav-text)" }} />
-              <span className={`block w-6 h-0.5 rounded-full transition-all duration-300 ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} style={{ backgroundColor: "var(--nav-text)" }} />
-            </button>
-            <a
-              href="https://wa.me/233248978606?text=Hello%20Boba%20King!%20I%20want%20to%20order"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:block font-extrabold px-6 py-2.5 rounded-full"
-              style={{
-                backgroundImage: "linear-gradient(50deg, var(--gold-light), var(--gold))",
-                color: "#0A1931",
-              }}
-            >
-              Order Now
-            </a>
           </div>
         </div>
       </nav>
 
-      {/* --- Mobile Nav Drawer --- */}
-      {menuOpen && (
-        <div
-          className="fixed inset-0 z-[60] md:hidden"
-          onClick={() => setMenuOpen(false)}
-        >
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <div
-            className="absolute top-0 right-0 h-full w-72 flex flex-col shadow-2xl transition-transform duration-300"
-            style={{
-              backgroundColor: "var(--bg)",
-              borderLeft: "1px solid var(--border-gold)",
-              animation: "slideInRight 0.3s ease-out",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b"              style={{ borderColor: "var(--border-gold)" }}>
-              <span className="font-heading font-bold text-lg" style={{ color: "var(--gold)" }}>
-                Menu
-              </span>
-              <button
-                onClick={() => setMenuOpen(false)}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-white text-lg hover:bg-white/10 transition-colors"
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
-            </div>
-            <nav className="flex flex-col gap-1 px-3 py-4">
-              {[
-                { label: "Menu", href: "#menu" },
-                { label: "About Us", href: "#why-us" },
-                { label: "Location", href: "#location" },
-                { label: "Hours", href: "#hours" },
-              ].map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="px-4 py-3 rounded-xl text-sm font-semibold transition-colors"
-                  style={{ color: "var(--text-secondary)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(194,143,26,0.1)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-            <div className="mt-auto px-5 pb-6">
-              <a
-                href="https://wa.me/233248978606?text=Hello%20Boba%20King!%20I%20want%20to%20order"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full text-center font-extrabold px-6 py-3 rounded-full"
-                style={{
-                  backgroundImage: "linear-gradient(50deg, var(--gold-light), var(--gold))",
-                  color: "#0A1931",
-                }}
-              >
-                Order Now
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* --- Hero Section --- */}
       <section className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 pt-6 sm:pt-20 pb-8 sm:pb-20 grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center">
@@ -330,18 +245,18 @@ export default function Home() {
 
         <div className="relative flex justify-center">
           <div
-            className="reveal-scale relative w-full max-w-[260px] sm:max-w-[420px] aspect-square sm:aspect-[4/5] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl"
+            className="reveal-scale relative w-full max-w-[320px] sm:max-w-[480px] lg:max-w-[560px] aspect-[5/4] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl"
             style={{
               backgroundColor: "var(--bg-card)",
               border: "2px solid var(--hero-border)",
             }}
           >
             <Image
-              alt="Boba King Signature Drink"
+              alt="Boba King signature drinks on a tray"
               fill
-              sizes="(max-width: 768px) 80vw, 420px"
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 480px, 560px"
               className="object-cover"
-              src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80"
+              src="/hero-drinks.jpg"
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 pointer-events-none" />
@@ -350,13 +265,13 @@ export default function Home() {
                 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider"
                 style={{ color: "var(--gold)" }}
               >
-                Featured Beverage
+                Featured Drinks
               </span>
               <h3 className="text-lg sm:text-xl font-extrabold font-heading mt-1 text-white">
-                Vanilla Boba Latte
+                The Boba King Lineup
               </h3>
               <p className="text-[10px] sm:text-xs text-gray-300 mt-1">
-                Smooth vanilla latte with chewy brown sugar boba pearls.
+                Classic, taro, matcha & more — handcrafted fresh daily.
               </p>
             </div>
           </div>
@@ -730,34 +645,58 @@ export default function Home() {
       </div>
 
       {/* --- Promo / Offer Section --- */}
-      <div className="reveal-section relative z-10 py-8 sm:py-12 max-w-7xl mx-auto px-5 sm:px-6" style={{ backgroundColor: "var(--bg)" }}>
+      <div
+        className="reveal-section relative z-10 py-10 sm:py-16 max-w-7xl mx-auto px-5 sm:px-6"
+        style={{ backgroundColor: "var(--bg)" }}
+      >
         <div
-          className="rounded-3xl sm:rounded-[2rem] p-8 sm:p-12 relative overflow-hidden"
+          className="rounded-3xl sm:rounded-[2rem] overflow-hidden relative"
           style={{ backgroundColor: "var(--gold)" }}
         >
-          <div className="relative z-10">
-            <span className="inline-block px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider mb-5" style={{ backgroundColor: "#1A1A1A", color: "#FFFFFF" }}>
+          <div className="p-8 sm:p-12 lg:p-16 flex flex-col items-start">
+            {/* Badge */}
+            <span
+              className="inline-block px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest mb-6"
+              style={{ backgroundColor: "#0A1931", color: "#FFFFFF" }}
+            >
               Exclusive Offer
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-heading tracking-tight mb-5" style={{ color: "#1A1A1A" }}>
-              Get <span className="underline decoration-2 underline-offset-4">10%</span> OFF!
-            </h2>
-            <p className="text-sm sm:text-base font-bold max-w-lg mb-8 leading-relaxed" style={{ color: "#1A1A1A" }}>
-              Show us you follow us on TIKTOK and INSTAGRAM upon pickup to redeem your instant discount on any drink!
-            </p>
-            <div
-              className="inline-block rounded-2xl p-5 sm:p-6"
-              style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+
+            {/* Heading */}
+            <h2
+              className="text-3xl sm:text-4xl lg:text-5xl font-black font-heading tracking-tight mb-5"
+              style={{ color: "#0A1931" }}
             >
-              <p className="font-black text-sm uppercase tracking-wider mb-2" style={{ color: "#1A1A1A" }}>
+              Get <span className="underline decoration-[3px] underline-offset-8">10%</span> OFF!
+            </h2>
+
+            {/* Body copy */}
+            <p
+              className="text-sm sm:text-base font-bold max-w-lg leading-relaxed mb-8"
+              style={{ color: "#0A1931" }}
+            >
+              Show us you follow us on <span className="font-extrabold">TIKTOK</span> and <span className="font-extrabold">INSTAGRAM</span> upon pickup to redeem your instant discount on any drink!
+            </p>
+
+            {/* Operating hours card */}
+            <div
+              className="rounded-2xl p-5 sm:p-6 w-full max-w-md"
+              style={{ backgroundColor: "rgba(10, 25, 49, 0.15)" }}
+            >
+              <p
+                className="font-extrabold text-xs sm:text-sm uppercase tracking-widest mb-3"
+                style={{ color: "#0A1931" }}
+              >
                 Operating Hours
               </p>
-              <p className="text-sm font-bold" style={{ color: "#1A1A1A" }}>
-                Mon – Sat: 12:00 PM – 11:00 PM
-              </p>
-              <p className="text-sm font-bold" style={{ color: "#1A1A1A" }}>
-                Sun: 3:00 PM – 10:00 PM
-              </p>
+              <div className="flex flex-col gap-1.5">
+                <p className="text-sm sm:text-base font-bold" style={{ color: "#0A1931" }}>
+                  Mon – Sat: 12:00 PM – 11:00 PM
+                </p>
+                <p className="text-sm sm:text-base font-bold" style={{ color: "#0A1931" }}>
+                  Sun: 3:00 PM – 10:00 PM
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -852,7 +791,7 @@ export default function Home() {
         }}
       >
         <div
-          className="max-w-7xl mx-auto text-center text-sm"
+          className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
           style={{ color: "var(--text-muted)" }}
         >
           <p>
@@ -861,9 +800,49 @@ export default function Home() {
               0248978606
             </a>
           </p>
+          <div className="flex flex-wrap items-center gap-3 text-xs">
+            <a href="/privacy" className="hover:underline transition-colors" style={{ color: "var(--text-secondary)" }}>
+              Privacy Policy
+            </a>
+            <span style={{ color: "var(--text-muted)" }}>&bull;</span>
+            <a href="/cookies" className="hover:underline transition-colors" style={{ color: "var(--text-secondary)" }}>
+              Cookie Policy
+            </a>
+            <span style={{ color: "var(--text-muted)" }}>&bull;</span>
+            <a href="/terms" className="hover:underline transition-colors" style={{ color: "var(--text-secondary)" }}>
+              Terms & Conditions
+            </a>
+          </div>
         </div>
       </footer>
       </div>
+
+      {/* --- Back to Top Button --- */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300"
+        style={{
+          opacity: showScrollTop ? 1 : 0,
+          transform: showScrollTop ? "translateY(0) scale(1)" : "translateY(20px) scale(0.8)",
+          pointerEvents: showScrollTop ? "auto" : "none",
+          backgroundImage: "linear-gradient(50deg, var(--gold-light), var(--gold))",
+          color: "#0A1931",
+        }}
+        aria-label="Back to top"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="18 15 12 9 6 15" />
+        </svg>
+      </button>
     </>
   );
 }

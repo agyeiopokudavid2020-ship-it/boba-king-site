@@ -1,53 +1,44 @@
 @import "tailwindcss";
 
-@theme {
-  --color-brand-dark: #0a1931;
-  --color-brand-card: #0D1F38;
-  --color-brand-gold: #C28F1A;
-  --font-heading: "Bricolage Grotesque", sans-serif;
-  --font-sans: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-/* --- Theme tokens (dark default, light override) --- */
+/* Fonts and the brand palette. Everything on the page pulls from these
+   variables so the dark/light switch in ThemeContext stays one-line. */
 :root,
 [data-theme="dark"] {
-  --bg: #0A1931;
-  --bg-card: #0D1F38;
-  --text: #FFFFFF;
-  --text-secondary: #D1D5DB;
-  --text-muted: #9CA3AF;
-  --gold: #C28F1A;
-  --gold-light: #F6E073;
-  --border-gold: rgba(194,143,26,0.2);
-  --border-subtle: rgba(255,255,255,0.1);
-  --badge-bg: rgba(10,25,49,0.8);
-  --icon-btn-bg: #0D1F38;
-  --feature-icon-bg: #0A1931;
-  --section-alt-bg: #0D1F3899;
-  --footer-bg: rgba(13,31,56,0.9);
-  --pill-bg: #0D1F38;
-  --hero-border: #C28F1A44;
-  --nav-text: #FFFFFF;
+  --bg: #0a1931;
+  --bg-card: #0d1f38;
+  --text: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --gold: #c28f1a;
+  --gold-light: #f6e073;
+  --border-gold: rgba(194, 143, 26, 0.2);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --icon-btn-bg: #0d1f38;
+  --feature-icon-bg: #0a1931;
+  --section-alt-bg: #0d1f3899;
+  --footer-bg: rgba(13, 31, 56, 0.9);
+  --hero-border: #c28f1a44;
+  --nav-text: #ffffff;
+  --badge-bg: rgba(10, 25, 49, 0.8);
 }
 
 [data-theme="light"] {
-  --bg: #F8F6F0;
-  --bg-card: #FFFFFF;
-  --text: #1A1A1A;
-  --text-secondary: #6B7280;
-  --text-muted: #9CA3AF;
-  --gold: #C28F1A;
-  --gold-light: #F6E073;
-  --border-gold: rgba(194,143,26,0.3);
-  --border-subtle: rgba(0,0,0,0.08);
-  --badge-bg: rgba(0,0,0,0.06);
-  --icon-btn-bg: #1A1A1A;
-  --feature-icon-bg: #F3F0E8;
-  --section-alt-bg: #F3F0E899;
-  --footer-bg: rgba(255,255,255,0.9);
-  --pill-bg: #F3F0E8;
-  --hero-border: #C28F1A33;
-  --nav-text: #1A1A1A;
+  --bg: #f8f6f0;
+  --bg-card: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --gold: #c28f1a;
+  --gold-light: #f6e073;
+  --border-gold: rgba(194, 143, 26, 0.3);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --icon-btn-bg: #1a1a1a;
+  --feature-icon-bg: #f3f0e8;
+  --section-alt-bg: #f3f0e899;
+  --footer-bg: rgba(255, 255, 255, 0.9);
+  --hero-border: #c28f1a33;
+  --nav-text: #1a1a1a;
+  --badge-bg: rgba(0, 0, 0, 0.06);
 }
 
 html {
@@ -55,30 +46,35 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .font-heading {
-  font-family: var(--font-heading);
+  font-family: "Bricolage Grotesque", sans-serif;
 }
 
-/* Hide Netlify badge if injected at runtime */
-.netlify-badge {
-  display: none !important;
+/* Gold gradient used for CTAs and the back-to-top button */
+.gold-gradient {
+  background-image: linear-gradient(50deg, var(--gold-light), var(--gold));
+  color: #0a1931;
 }
 
-/* Mobile nav slide-in */
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+.icon-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  background-color: var(--icon-btn-bg);
 }
 
-/* Scroll-reveal animations */
-.reveal-section {
+/* Scroll reveal. ScrollReveal.tsx adds .revealed via an IntersectionObserver;
+   [data-stagger] children get a per-card delay set inline from that script. */
+.reveal-section,
+.reveal-scale,
+[data-stagger] {
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -86,74 +82,24 @@ body {
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-section.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger children */
-[data-stagger] {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-stagger].revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Fade from left variant */
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-30px);
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-left.revealed {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Fade from right variant */
-.reveal-right {
-  opacity: 0;
-  transform: translateX(30px);
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-right.revealed {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Scale-up variant */
 .reveal-scale {
-  opacity: 0;
   transform: scale(0.92);
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-scale.revealed {
+[data-stagger] {
+  transform: translateY(24px);
+  transition-duration: 0.6s;
+}
+
+.revealed {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal-section,
-  [data-stagger],
-  .reveal-left,
-  .reveal-right,
-  .reveal-scale {
+  .reveal-scale,
+  [data-stagger] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
